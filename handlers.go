@@ -46,3 +46,19 @@ func (s *EmployeeStore) CreateEmployee(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(e)
 }
+
+// DeleteEmployee removes an employee by ID.
+func (s *EmployeeStore) DeleteEmployee(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err \!= nil {
+		http.Error(w, "invalid id", http.StatusBadRequest)
+		return
+	}
+	if _, ok := s.employees[id]; \!ok {
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
+	delete(s.employees, id)
+	w.WriteHeader(http.StatusNoContent)
+}
