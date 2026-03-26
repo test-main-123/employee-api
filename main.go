@@ -11,6 +11,7 @@ func main() {
 	store := NewEmployeeStore()
 
 	r := mux.NewRouter()
+	r.HandleFunc("/health", HealthCheck).Methods("GET")
 	r.HandleFunc("/employees", store.ListEmployees).Methods("GET")
 	r.HandleFunc("/employees/{id}", store.GetEmployee).Methods("GET")
 	r.HandleFunc("/employees", store.CreateEmployee).Methods("POST")
